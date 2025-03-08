@@ -4,7 +4,7 @@ import net.javaguides.emsbackend.dto.DepartmentDto;
 import net.javaguides.emsbackend.entities.Department;
 
 public class DepartmentMapper {
-    // Convert department jpa entity to deparment dto
+    // Convert department jpa entity to department dto
     public static DepartmentDto mapToDepartmentDto(Department department) {
         return new DepartmentDto(
                 department.getId(),
