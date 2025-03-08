@@ -4,4 +4,6 @@ import net.javaguides.emsbackend.dto.DepartmentDto;
 
 public interface IDepartmentService {
     DepartmentDto createDepartment(DepartmentDto departmentDto);
+
+    DepartmentDto getDepartmentById(Long departmentId);
 }
