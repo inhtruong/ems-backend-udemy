@@ -9,6 +9,9 @@ import net.javaguides.emsbackend.repositories.IDepartmentRepository;
 import net.javaguides.emsbackend.services.IDepartmentService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class DepartmentService implements IDepartmentService {
@@ -28,5 +31,12 @@ public class DepartmentService implements IDepartmentService {
                 () -> new ResourceNotFoundException("Department is not exists with a given id" + departmentId)
         );
         return DepartmentMapper.mapToDepartmentDto(department);
+    }
+
+    @Override
+    public List<DepartmentDto> getAllDepartments() {
+        List<Department> departments = departmentRepository.findAll();
+
+        return departments.stream().map(DepartmentMapper::mapToDepartmentDto).collect(Collectors.toList());
     }
 }
