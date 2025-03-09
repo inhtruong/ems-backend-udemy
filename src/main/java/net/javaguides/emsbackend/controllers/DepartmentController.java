@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/departments")
 public class DepartmentController {
     private DepartmentService departmentService;
-s
+
     // Build Add Department REST API
     @PostMapping
     public ResponseEntity<DepartmentDto> createDepartment(@RequestBody DepartmentDto departmentDto) {
