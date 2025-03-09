@@ -2,9 +2,11 @@ package net.javaguides.emsbackend.services.impl;
 
 import lombok.AllArgsConstructor;
 import net.javaguides.emsbackend.dto.EmployeeDto;
+import net.javaguides.emsbackend.entities.Department;
 import net.javaguides.emsbackend.entities.Employee;
 import net.javaguides.emsbackend.exceptions.ResourceNotFoundException;
 import net.javaguides.emsbackend.mapper.EmployeeMapper;
+import net.javaguides.emsbackend.repositories.IDepartmentRepository;
 import net.javaguides.emsbackend.repositories.IEmployeeRepository;
 import net.javaguides.emsbackend.services.IEmployeeService;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,17 @@ public class EmployeeService implements IEmployeeService {
 
     private IEmployeeRepository employeeRepository;
 
+    private IDepartmentRepository departmentRepository;
+
     @Override
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
         Employee employee = EmployeeMapper.mapToEmployee(employeeDto);
+
+        Department department = departmentRepository.findById(employeeDto.getDepartmentId()).orElseThrow(
+                () -> new ResourceNotFoundException("Department is not exists with a given id" + employeeDto.getDepartmentId()));
+
+        employee.setDepartment(department);
+
         Employee savedEmployee = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDto(savedEmployee);
     }
@@ -46,6 +56,11 @@ public class EmployeeService implements IEmployeeService {
         employee.setFirstName(updateEmployeeDto.getFirstName());
         employee.setLastName(updateEmployeeDto.getLastName());
         employee.setEmail(updateEmployeeDto.getEmail());
+
+        Department department = departmentRepository.findById(updateEmployeeDto.getDepartmentId()).orElseThrow(
+                () -> new ResourceNotFoundException("Department is not exists with a given id" + updateEmployeeDto.getDepartmentId()));
+
+        employee.setDepartment(department);
 
         Employee updateEmployeeObj = employeeRepository.save(employee);
         return EmployeeMapper.mapToEmployeeDto(updateEmployeeObj);
